@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+    <title>Pookie Bear Valentine</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #ffb6c1;
+            --text-color: #8b6b6b;
+            --bg-color: #f5e6e6;
+        }
+
+        body {
+            min-height: 100vh;
+            background-color: var(--bg-color);
+            font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            padding: 20px;
+        }
+
+        h1 {
+            color: var(--text-color);
+            font-size: 28px;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .image-container {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(139, 107, 107, 0.2);
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        button {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 50px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        #yesBtn {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        #noBtn {
+            background-color: #d3d3d3;
+            color: #666;
+            position: relative;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .success-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--bg-color);
+            animation: fadeIn 0.5s ease;
+            padding: 40px;
+        }
+
+        .message {
+            color: var(--text-color);
+            font-size: 24px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+            text-align: center;
+            max-width: 600px;
+            margin: 20px auto;
+        }
+
+        .heart {
+            position: fixed;
+            font-size: 24px;
+            animation: float 2s ease-in both;
+            pointer-events: none;
+            will-change: transform, opacity;
+            backface-visibility: hidden;
+            transform: translateZ(0);
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) scale(0.5);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (min-width: 768px) {
+            .btn-container {
+                flex-direction: row;
+                justify-content: center;
+            }
+
+            button {
+                width: auto;
+                min-width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="mainContainer">
+        <h1>Hey Pookie... 🐱</h1>
+        <div class="image-container">
+            <img src="bongo-cat-cat-meme.gif" alt="Pookie Bear">
+        </div>
+        <h1>Will you be my Valentine?</h1>
+        <div class="btn-container">
+            <button id="yesBtn" onclick="accepted()">Yes, pookie! 💕</button>
+            <button id="noBtn" onclick="moveNoButton(this)">No... 🥺</button>
+        </div>
+    </div>
+
+    <div class="success-container" id="successContainer">
+        <div class="container">
+            <h1>Yay Pookie! 💖</h1>
+            <div class="image-container">
+                <img src="silly-silly-guy.gif" alt="Happy Pookie Bear">
+            </div>
+            <div class="message">You make me the happiest pookie ever! 🥰</div>
+        </div>
+    </div>
+
+    <script>
+        const phrases = [
+            "Please pookie... 🥺",
+            "Don't do this to me 😢",
+            "I'll be so sad 😿",
+            "Think again pookie! 💝",
+            "But I love you! 💕",
+            "Give pookie a chance! 🐱",
+            "Pretty please? 🎀",
+            "Don't break my heart 💔",
+            "One more chance? 🙏",
+            "Pookie bears forever! 🐻",
+        ];
+        let phraseIndex = 0;
+
+        function moveNoButton(btn) {
+            btn.textContent = phrases[phraseIndex];
+            phraseIndex = (phraseIndex + 1) % phrases.length;
+
+            const maxX = window.innerWidth - btn.offsetWidth - 20;
+            const maxY = window.innerHeight - btn.offsetHeight - 20;
+            const newX = Math.max(10, Math.random() * maxX);
+            const newY = Math.max(10, Math.random() * maxY);
+
+            btn.style.position = 'fixed';
+            btn.style.left = `${newX}px`;
+            btn.style.top = `${newY}px`;
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '❤️';
+
+            const heartX = Math.random() * (window.innerWidth - 30);
+            const heartY = window.innerHeight - 50;
+            heart.style.left = `${heartX}px`;
+            heart.style.top = `${heartY}px`;
+
+            document.body.appendChild(heart);
+
+            heart.addEventListener('animationend', () => {
+                heart.remove();
+            });
+        }
+
+        function accepted() {
+            document.getElementById('mainContainer').style.display = 'none';
+            document.getElementById('successContainer').style.display = 'block';
+
+            setInterval(createHeart, 300);
+
+            for (let i = 0; i < 10; i++) {
+                setTimeout(createHeart, i * 100);
+            }
+        }
+    </script>
+</body>
+</html>
