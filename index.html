@@ -1,0 +1,46 @@
+<!-- เวอร์ชัน HTML, CSS, และ JavaScript สำหรับสุ่มเมนูอาหารและของหวาน -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>อะไรก็ได้: สุ่มเมนูอาหารและของหวาน</title>
+  <style>
+    body { font-family: Arial, sans-serif; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+    h1 { font-size: 24px; font-weight: bold; }
+    select, button { padding: 10px; margin: 10px; font-size: 16px; cursor: pointer; }
+    .result { font-size: 18px; font-weight: bold; margin: 10px; }
+    button { border: none; border-radius: 5px; }
+    .btn-food { background-color: #3498db; color: white; }
+    .btn-dessert { background-color: #e74c3c; color: white; }
+  </style>
+</head>
+<body>
+  <h1>อะไรก็ได้: สุ่มเมนูอาหารและของหวาน</h1>
+  <select id="mode">
+    <option value="street">🌮 Street Food</option>
+    <option value="mall">🍽️ อาหารตามห้าง</option>
+  </select>
+  <button class="btn-food" onclick="randomFood()">🍛 สุ่มอาหาร</button>
+  <button class="btn-dessert" onclick="randomDessert()">🍰 สุ่มของหวาน</button>
+
+  <p id="foodResult" class="result"></p>
+  <p id="dessertResult" class="result"></p>
+
+  <script>
+    const streetFoods = ['ส้มตำ','หมูปิ้ง','ก๋วยเตี๋ยวเรือ','หมูสะเต๊ะ','ไก่ทอด'];
+    const mallFoods = ['สเต็ก','สปาเก็ตตี้','ซูชิ','พิซซ่า','ซุปเห็ด'];
+    const desserts = ['ไอศกรีม','บัวลอย','ข้าวเหนียวมะม่วง','แพนเค้ก','ชานมไข่มุก'];
+
+    function randomFood() {
+      const mode = document.getElementById('mode').value;
+      const menu = mode === 'street' ? streetFoods : mallFoods;
+      document.getElementById('foodResult').textContent = 'เมนูวันนี้: ' + menu[Math.floor(Math.random() * menu.length)];
+    }
+
+    function randomDessert() {
+      document.getElementById('dessertResult').textContent = 'ของหวานวันนี้: ' + desserts[Math.floor(Math.random() * desserts.length)];
+    }
+  </script>
+</body>
+</html>
