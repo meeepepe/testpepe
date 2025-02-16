@@ -6,64 +6,68 @@
   <title>อะไรก็ได้: สุ่มเมนูอาหารและของหวาน</title>
   <style>
     body {
-      font-family: 'Arial', sans-serif;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       height: 100vh;
       padding: 20px;
-      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
       color: #fff;
     }
     h1 {
       font-size: 3rem;
       font-weight: bold;
       margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
     }
     select, button {
-      padding: 15px 25px;
+      padding: 15px 30px;
       margin: 10px;
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       cursor: pointer;
-      border-radius: 25px;
-      border: none;
+      border-radius: 50px;
+      border: 2px solid #fff;
+      box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
       transition: all 0.3s;
     }
     .result {
-      font-size: 1.5rem;
+      font-size: 1.7rem;
       font-weight: bold;
       margin: 20px 0;
-      background-color: rgba(255, 255, 255, 0.2);
-      padding: 15px;
-      border-radius: 20px;
-      backdrop-filter: blur(10px);
+      background-color: rgba(255, 255, 255, 0.3);
+      padding: 20px;
+      border-radius: 30px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
     }
     .btn-food {
-      background-color: #3498db;
-      color: white;
+      background-color: #f9c74f;
+      color: #fff;
     }
     .btn-dessert {
-      background-color: #e74c3c;
-      color: white;
+      background-color: #f9844a;
+      color: #fff;
     }
     button:hover {
-      transform: scale(1.1);
-      opacity: 0.9;
+      transform: scale(1.15);
+      opacity: 0.95;
     }
     select {
-      background-color: #2ecc71;
+      background-color: #43aa8b;
       color: white;
     }
     @media (max-width: 768px) {
-      h1 { font-size: 2rem; }
-      select, button { font-size: 1rem; padding: 10px 20px; }
-      .result { font-size: 1.2rem; }
+      h1 { font-size: 2.5rem; }
+      select, button { font-size: 1.1rem; padding: 12px 20px; }
+      .result { font-size: 1.4rem; }
     }
   </style>
 </head>
 <body>
-  <h1>✨ อะไรก็ได้: สุ่มเมนูอาหารและของหวาน ✨</h1>
+  <h1>🎨 อะไรก็ได้: สุ่มเมนูสุดคิวท์ 🍭</h1>
   <select id="mode">
     <option value="street">🌮 Street Food</option>
     <option value="mall">🍽️ อาหารตามห้าง</option>
@@ -82,11 +86,11 @@
     function randomFood() {
       const mode = document.getElementById('mode').value;
       const menu = mode === 'street' ? streetFoods : mallFoods;
-      document.getElementById('foodResult').textContent = 'เมนูวันนี้: ' + menu[Math.floor(Math.random() * menu.length)];
+      document.getElementById('foodResult').textContent = '🍲 เมนูวันนี้: ' + menu[Math.floor(Math.random() * menu.length)];
     }
 
     function randomDessert() {
-      document.getElementById('dessertResult').textContent = 'ของหวานวันนี้: ' + desserts[Math.floor(Math.random() * desserts.length)];
+      document.getElementById('dessertResult').textContent = '🍨 ของหวานวันนี้: ' + desserts[Math.floor(Math.random() * desserts.length)];
     }
   </script>
 </body>
