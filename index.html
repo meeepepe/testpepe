@@ -3,71 +3,48 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>อะไรก็ได้: สุ่มเมนูอาหารและของหวาน</title>
+  <title>สุ่ม</title>
   <style>
     body {
       font-family: 'Comic Sans MS', cursive, sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      height: 100vh;
       padding: 20px;
-      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+      background: linear-gradient(135deg, #ffd3e0, #f7a8b8);
       color: #fff;
     }
-    h1 {
-      font-size: 3rem;
-      font-weight: bold;
-      margin-bottom: 20px;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-    }
+    h1 { font-size: 2.5rem; margin-bottom: 20px; }
     select, button {
-      padding: 15px 30px;
+      padding: 12px 25px;
       margin: 10px;
-      font-size: 1.3rem;
-      cursor: pointer;
-      border-radius: 50px;
-      border: 2px solid #fff;
-      box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
-      transition: all 0.3s;
-    }
-    .result {
-      font-size: 1.7rem;
-      font-weight: bold;
-      margin: 20px 0;
-      background-color: rgba(255, 255, 255, 0.3);
-      padding: 20px;
+      font-size: 1.1rem;
       border-radius: 30px;
-      backdrop-filter: blur(12px);
-      box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+      border: 2px solid #fff;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 450px;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+    th, td {
+      border: 1px solid #fff;
+      padding: 8px;
       text-align: center;
     }
-    .btn-food {
-      background-color: #f9c74f;
-      color: #fff;
-    }
-    .btn-dessert {
-      background-color: #f9844a;
-      color: #fff;
-    }
-    button:hover {
-      transform: scale(1.15);
-      opacity: 0.95;
-    }
-    select {
-      background-color: #43aa8b;
-      color: white;
-    }
-    @media (max-width: 768px) {
-      h1 { font-size: 2.5rem; }
-      select, button { font-size: 1.1rem; padding: 12px 20px; }
-      .result { font-size: 1.4rem; }
-    }
+    .btn-food { background-color: #ffad60; }
+    .btn-dessert { background-color: #ff6f91; }
+    button:hover { transform: scale(1.1); }
   </style>
 </head>
 <body>
-  <h1>🎨 อะไรก็ได้: สุ่มเมนูสุดคิวท์ 🍭</h1>
+  <h1>✨ สุ่ม ✨</h1>
+  <select id="player">
+    <option value="NAT">👩 NAT</option>
+    <option value="Pond">🧑 Pond</option>
+  </select>
   <select id="mode">
     <option value="street">🌮 Street Food</option>
     <option value="mall">🍽️ อาหารตามห้าง</option>
@@ -75,22 +52,65 @@
   <button class="btn-food" onclick="randomFood()">🍛 สุ่มอาหาร</button>
   <button class="btn-dessert" onclick="randomDessert()">🍰 สุ่มของหวาน</button>
 
-  <p id="foodResult" class="result"></p>
-  <p id="dessertResult" class="result"></p>
+  <h2>📋 อันดับอาหาร</h2>
+  <table id="foodTable">
+    <tr><th>อันดับ</th><th>รายการ</th><th>ผู้สุ่ม</th></tr>
+  </table>
+
+  <h2>🍰 อันดับของหวาน</h2>
+  <table id="dessertTable">
+    <tr><th>อันดับ</th><th>รายการ</th><th>ผู้สุ่ม</th></tr>
+  </table>
 
   <script>
-    const streetFoods = ['ส้มตำ','หมูปิ้ง','ก๋วยเตี๋ยวเรือ','หมูสะเต๊ะ','ไก่ทอด'];
-    const mallFoods = ['สเต็ก','สปาเก็ตตี้','ซูชิ','พิซซ่า','ซุปเห็ด'];
-    const desserts = ['ไอศกรีม','บัวลอย','ข้าวเหนียวมะม่วง','แพนเค้ก','ชานมไข่มุก'];
+    const streetFoods = ['ส้มตำ','หมูปิ้ง','ก๋วยเตี๋ยวเรือ','หมูสะเต๊ะ','ไก่ทอด','ยำวุ้นเส้น','โรตี','ต้มยำกุ้ง','ข้าวมันไก่','หมูกระทะ'];
+    const mallFoods = ['สเต็ก','สปาเก็ตตี้','ซูชิ','พิซซ่า','ราเมง','บิงซู','ทงคัตสึ','ชาบู','ซาชิมิ'];
+    const desserts = ['ไอศกรีม','บัวลอย','แพนเค้ก','ชานมไข่มุก','เค้กช็อกโกแลต','มาการอง','พุดดิ้ง','บราวนี่','ทีรามิสุ','โมจิ','มูสเค้ก','สตรอว์เบอร์รีชีสเค้ก','เจลลาโต้'];
+    let foodCount = 0;
+    let dessertCount = 0;
+
+    function addToTable(type, item) {
+      const player = document.getElementById('player').value;
+      const table = type === 'อาหาร' ? document.getElementById('foodTable') : document.getElementById('dessertTable');
+      const count = type === 'อาหาร' ? ++foodCount : ++dessertCount;
+
+      if (count > 10) {
+        alert(`${type} เต็มแล้ว (10 รายการ)`);
+        return;
+      }
+
+      const row = table.insertRow();
+      row.insertCell(0).textContent = count;
+      row.insertCell(1).textContent = item;
+      row.insertCell(2).textContent = player;
+
+      const deleteBtn = document.createElement('button');
+      deleteBtn.textContent = '❌';
+      deleteBtn.style.cursor = 'pointer';
+      deleteBtn.onclick = () => {
+        row.remove();
+        if (type === 'อาหาร') foodCount--;
+        else dessertCount--;
+        reorderTable(table);
+      };
+      row.insertCell(3).appendChild(deleteBtn);
+    }
+
+    function reorderTable(table) {
+      const rows = table.querySelectorAll('tr:not(:first-child)');
+      rows.forEach((row, index) => {
+        row.cells[0].textContent = index + 1;
+      });
+    }
 
     function randomFood() {
       const mode = document.getElementById('mode').value;
       const menu = mode === 'street' ? streetFoods : mallFoods;
-      document.getElementById('foodResult').textContent = '🍲 เมนูวันนี้: ' + menu[Math.floor(Math.random() * menu.length)];
+      addToTable('อาหาร', menu[Math.floor(Math.random() * menu.length)]);
     }
 
     function randomDessert() {
-      document.getElementById('dessertResult').textContent = '🍨 ของหวานวันนี้: ' + desserts[Math.floor(Math.random() * desserts.length)];
+      addToTable('ของหวาน', desserts[Math.floor(Math.random() * desserts.length)]);
     }
   </script>
 </body>
